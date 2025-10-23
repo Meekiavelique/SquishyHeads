@@ -1,4 +1,5 @@
-![Replace this with a description](https://cdn.modrinth.com/data/cached_images/2d8e1fb5660b826884d458bfbc8c48e659b0d228.png)
+<img width="1248" height="627" alt="image" src="https://github.com/user-attachments/assets/0f55ed1a-4feb-4b2f-8b9a-4a6271577e3d" />
+
 A Simple Voice Chat addon that makes player heads squish and stretch based on voice volume in real-time
 
 ## Features
