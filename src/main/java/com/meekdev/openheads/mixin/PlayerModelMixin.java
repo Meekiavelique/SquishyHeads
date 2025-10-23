@@ -1,6 +1,5 @@
 package com.meekdev.openheads.mixin;
 
-import com.meekdev.openheads.VoiceChatIntegration;
 import com.meekdev.openheads.client.OpenheadsClient;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
@@ -14,15 +13,13 @@ public class PlayerModelMixin {
 
     @Inject(method = "setAngles(Lnet/minecraft/client/render/entity/state/PlayerEntityRenderState;)V", at = @At("RETURN"))
     private void squishHeadWhenTalking(PlayerEntityRenderState state, CallbackInfo ci) {
-        Float squishAmount = OpenheadsClient.HEAD_ROTATIONS.get(state.id);
+        OpenheadsClient.SquishData squish = OpenheadsClient.HEAD_SQUISH.get(state.id);
         PlayerEntityModel model = (PlayerEntityModel)(Object)this;
 
-
-        if (squishAmount != null) {
-            float scale = 1.0f + (squishAmount / 100.0f);
-            model.head.xScale = scale;
-            model.head.yScale = 2.0f - scale;
-            model.head.zScale = scale;
+        if (squish != null) {
+            model.head.xScale = 1.0f + squish.xScale;
+            model.head.yScale = 1.0f + squish.yScale;
+            model.head.zScale = 1.0f + squish.zScale;
         } else {
             model.head.xScale = 1.0f;
             model.head.yScale = 1.0f;

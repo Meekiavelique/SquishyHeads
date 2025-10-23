@@ -27,15 +27,18 @@ public class VoiceChatIntegration implements VoicechatPlugin {
 
     public static class AudioData {
         public double volume;
+        public double pitch;
         public long timestamp;
 
-        public AudioData(double volume, long timestamp) {
+        public AudioData(double volume, double pitch, long timestamp) {
             this.volume = volume;
+            this.pitch = pitch;
             this.timestamp = timestamp;
         }
 
-        public void update(double volume, long timestamp) {
+        public void update(double volume, double pitch, long timestamp) {
             this.volume = volume;
+            this.pitch = pitch;
             this.timestamp = timestamp;
         }
     }
@@ -78,14 +81,15 @@ public class VoiceChatIntegration implements VoicechatPlugin {
         short[] decoded = decoder.decode(opusData);
 
         double audioLevel = AudioUtils.calculateAudioLevel(decoded);
+        double pitch = FFTUtils.detectPitch(decoded, 48000);
         UUID uuid = event.getSenderConnection().getPlayer().getUuid();
         long timestamp = System.currentTimeMillis();
 
         AudioData existing = TALKING_PLAYERS.get(uuid);
         if (existing != null) {
-            existing.update(audioLevel, timestamp);
+            existing.update(audioLevel, pitch, timestamp);
         } else {
-            TALKING_PLAYERS.put(uuid, new AudioData(audioLevel, timestamp));
+            TALKING_PLAYERS.put(uuid, new AudioData(audioLevel, pitch, timestamp));
         }
     }
 
